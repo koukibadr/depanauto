@@ -10,8 +10,11 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class SosPneuVM {
   GlobalKey<ScaffoldState> _scaffoldKey;
-  SosPneuVM(GlobalKey<ScaffoldState> scaffold) {
+  BuildContext context;
+
+  SosPneuVM(GlobalKey<ScaffoldState> scaffold, BuildContext context) {
     _scaffoldKey = scaffold;
+    this.context = context;
   }
 
   TextEditingController phoneNumberTextController = TextEditingController();
@@ -53,5 +56,9 @@ class SosPneuVM {
       DialogBox()
           .showErrorSnackbar(_scaffoldKey, Constants.VERIFY_INPUTS);
     }
+  }
+
+   void onPressBack(){
+    Navigator.pop(context);
   }
 }

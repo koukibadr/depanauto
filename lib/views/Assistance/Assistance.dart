@@ -3,8 +3,13 @@ import 'package:depanauto/CustomWidgets/AssistanceTelNumberBox.dart';
 import 'package:depanauto/CustomWidgets/HeaderWidget.dart';
 import 'package:depanauto/CustomWidgets/InputField.dart';
 import 'package:depanauto/CustomWidgets/my_flutter_app_icons.dart';
+import 'package:depanauto/Utils/Constants.dart';
+import 'package:depanauto/Utils/DialogBox.dart';
 import 'package:depanauto/views/Assistance/AssistanceVM.dart';
+import 'package:depanauto/views/SosBatterie/SosBatterie.dart';
+import 'package:depanauto/views/SosPneu/SosPneu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class Assistance extends StatefulWidget {
@@ -18,8 +23,7 @@ class _Assistance extends State<Assistance> {
 
   @override
   Widget build(BuildContext context) {
-    
-    AssistanceVM assistanceVM = AssistanceVM(_scaffoldKey);
+    AssistanceVM assistanceVM = AssistanceVM(_scaffoldKey,context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -28,7 +32,11 @@ class _Assistance extends State<Assistance> {
         children: <Widget>[
           Align(
             alignment: Alignment.topCenter,
-            child: HeaderWidget(topLeftIcon: "assets/images/back.png",showRightIcon: false,),
+            child: HeaderWidget(
+              onPressLeftIcon: assistanceVM.onPressBack,
+              leftIcon: Icons.arrow_back_ios,
+              showRightIcon: false,
+            ),
           ),
           Padding(
               padding: EdgeInsets.only(top: 110, left: 15),
@@ -44,12 +52,14 @@ class _Assistance extends State<Assistance> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               SizedBox(height: 10),
-                              Image.asset("assets/images/urgence.png"),
+                              Icon(MyFlutterApp.emergency,
+                                  size: ScreenUtil().setWidth(150)),
                               SizedBox(height: 10),
                               Text(
                                 "Dépanage\nd'urgence",
                                 style: TextStyle(
-                                    fontFamily: "Poppins", fontSize: 22),
+                                    fontFamily: "Poppins",
+                                    fontSize: ScreenUtil().setWidth(50)),
                               ),
                               SizedBox(height: 20),
                               AssistanceTelNumberBox(
@@ -67,10 +77,10 @@ class _Assistance extends State<Assistance> {
                                   child: SizedBox(
                                       width: 270,
                                       child: InputField(
-                                          hint: "N° Tél",
+                                          hint: Constants.NUM_TEL,
                                           numberInput: true,
-                                          textController:
-                                              assistanceVM.phoneNumberTextController))),
+                                          textController: assistanceVM
+                                              .phoneNumberTextController))),
                               Padding(
                                   padding: EdgeInsets.only(top: 20),
                                   child: SizedBox(
@@ -78,11 +88,12 @@ class _Assistance extends State<Assistance> {
                                       height: 50,
                                       child: RoundedLoadingButton(
                                         color: Color(0xff910112),
-                                        child: Text('Valider',
+                                        child: Text(Constants.BUTTON_ENVOYER,
                                             style:
                                                 TextStyle(color: Colors.white)),
                                         controller: assistanceVM.btnController,
-                                        onPressed: assistanceVM.sendAssistanceRequest,
+                                        onPressed:
+                                            assistanceVM.sendAssistanceRequest,
                                       )))
                             ])
                       ],
@@ -105,7 +116,7 @@ class _Assistance extends State<Assistance> {
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-            icon: Icon(MyFlutterApp.cog_wheel),
+            icon: Icon(MyFlutterApp.wheel),
             title: Text('SOS Pneu'),
             activeColor: Colors.grey,
             textAlign: TextAlign.center,
@@ -123,7 +134,22 @@ class _Assistance extends State<Assistance> {
             textAlign: TextAlign.center,
           ),
         ],
-        onItemSelected: (int value) {},
+        onItemSelected: (int value) {
+          if (value == 1) {
+            Navigator.pushReplacement(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => SosPneu()));
+          } else if (value == 2) {
+            Navigator.pushReplacement(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => SosBatterie()));
+          } else if (value == 3) {
+            DialogBox().showSimpleSnackbar(
+                _scaffoldKey, Constants.FEATURE_COMMING_SOON);
+          }
+        },
       ),
     );
   }

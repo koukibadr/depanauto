@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 
 class HomeBox extends StatelessWidget {
   String image;
   String title;
+  IconData icon;
 
-  HomeBox({this.image, this.title});
+  HomeBox({this.image, this.title, this.icon});
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     return Container(
       margin: EdgeInsets.only(left: 0, top: 0, right: 0),
       height: 200,
@@ -34,11 +37,15 @@ class HomeBox extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[Image.asset(this.image,width: 120),
-          Text(
-            this.title,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'Poppins'),
+          children: <Widget>[
+            Icon(this.icon, size: ScreenUtil().setHeight(120)),
+            Padding(
+              padding: EdgeInsets.only(top: ScreenUtil().setHeight(30)),
+              child: Text(
+                this.title,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontFamily: 'Poppins'),
+              ),
             )
           ],
         ),

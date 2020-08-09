@@ -1,12 +1,14 @@
+import 'package:depanauto/CustomWidgets/my_flutter_app_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ComposerTel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60,
-      height: 70,
+      width: ScreenUtil().setWidth(180),
+      height: ScreenUtil().setWidth(200),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -19,8 +21,8 @@ class ComposerTel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset("assets/images/phone.png"),
-          Text("Composer",style: TextStyle(fontFamily: "Poppins-Thin",fontSize: 10),)
+          Icon(Icons.phone,size: ScreenUtil().setWidth(70),color: Colors.green),
+          Text("Composer",style: TextStyle(fontFamily: "Poppins-Thin",fontSize: ScreenUtil().setWidth(30)),)
         ],
       ),
     );

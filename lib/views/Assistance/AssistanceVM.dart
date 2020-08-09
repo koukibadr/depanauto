@@ -10,8 +10,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AssistanceVM {
   GlobalKey<ScaffoldState> _scaffoldKey;
-  AssistanceVM(GlobalKey<ScaffoldState> scaffold) {
+  BuildContext context ;
+  AssistanceVM(GlobalKey<ScaffoldState> scaffold,BuildContext activityContext) {
     _scaffoldKey = scaffold;
+    context = activityContext;
   }
 
   TextEditingController phoneNumberTextController = TextEditingController();
@@ -45,14 +47,16 @@ class AssistanceVM {
     }
   }
 
-  void openPhoneDialer() {
-    _launchCaller() async {
-      const url = "tel:55850022";
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    }
+  Future<void> openPhoneDialer() async {
+    const url = "tel:${Constants.PHONE_NUMBER}";   
+    if (await canLaunch(url)) {
+       await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }   
+  }
+
+  void onPressBack(){
+    Navigator.pop(context);
   }
 }

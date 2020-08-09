@@ -1,5 +1,7 @@
 import 'package:depanauto/CustomWidgets/ComposerTel.dart';
+import 'package:depanauto/Utils/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AssistanceTelNumberBox extends StatelessWidget {
 
@@ -11,8 +13,8 @@ class AssistanceTelNumberBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 270,
-      height: 150,
+      width: ScreenUtil().setWidth(900),
+      height:  ScreenUtil().setWidth(500),
       decoration: BoxDecoration(
         color: Color(0xffFAFAFA),
         borderRadius: BorderRadius.only(
@@ -33,12 +35,12 @@ class AssistanceTelNumberBox extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text("+216 55 850 022",
+                Text(Constants.PHONE_NUMBER_AFFICHE,
                 style: TextStyle(fontFamily: "Poppins-Bold")),
                 Padding(
                   padding: EdgeInsets.only(right: 10),
                   child: InkWell(
-                    onTap: onPress(),
+                    onTap: onPress,
                     child: ComposerTel(),
                   ),
                 )

@@ -9,8 +9,11 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class SosBatterieVM {
   GlobalKey<ScaffoldState> _scaffoldKey;
-  SosBatterieVM(GlobalKey<ScaffoldState> scaffold) {
+  BuildContext context ;
+
+  SosBatterieVM(GlobalKey<ScaffoldState> scaffold,BuildContext context) {
     _scaffoldKey = scaffold;
+    this.context = context;
   }
 
   TextEditingController phoneNumberTextController = TextEditingController();
@@ -52,5 +55,9 @@ class SosBatterieVM {
       DialogBox()
           .showErrorSnackbar(_scaffoldKey, Constants.VERIFY_INPUTS);
     }
+  }
+
+   void onPressBack(){
+    Navigator.pop(context);
   }
 }

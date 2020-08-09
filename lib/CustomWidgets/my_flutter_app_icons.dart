@@ -16,6 +16,10 @@
 ///         Author:    Daniela Howe & Ivan Montiel
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://nagoshiashumari.github.io/Rpg-Awesome/
+/// * Octicons, Copyright (C) 2020 by GitHub Inc.
+///         Author:    GitHub
+///         License:   MIT (http://opensource.org/licenses/mit-license.php)
+///         Homepage:  https://primer.style/octicons/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -28,6 +32,10 @@ class MyFlutterApp {
   static const IconData emergency = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData shock = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData car = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData wheel = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData info__1_ = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData close = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData tire = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData acid = IconData(0xe900, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData acorn = IconData(0xe901, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData alien_fire = IconData(0xe902, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -523,4 +531,5 @@ class MyFlutterApp {
   static const IconData x_mark = IconData(0xeaec, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData zebra_shield = IconData(0xeaed, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData zigzag_leaf = IconData(0xeaee, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData info = IconData(0xf3a9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

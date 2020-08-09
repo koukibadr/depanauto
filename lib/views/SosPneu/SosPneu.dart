@@ -2,9 +2,14 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:depanauto/CustomWidgets/HeaderWidget.dart';
 import 'package:depanauto/CustomWidgets/InputField.dart';
 import 'package:depanauto/CustomWidgets/my_flutter_app_icons.dart';
+import 'package:depanauto/Utils/Constants.dart';
+import 'package:depanauto/Utils/DialogBox.dart';
+import 'package:depanauto/views/Assistance/Assistance.dart';
+import 'package:depanauto/views/SosBatterie/SosBatterie.dart';
 import 'package:depanauto/views/SosPneu/SosPneuVM.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class SosPneu extends StatefulWidget {
@@ -17,7 +22,7 @@ class _SosPneu extends State<SosPneu> {
 
   @override
   Widget build(BuildContext context) {
-    SosPneuVM sosPneuVM = SosPneuVM(_scaffoldKey);
+    SosPneuVM sosPneuVM = SosPneuVM(_scaffoldKey, context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -27,7 +32,10 @@ class _SosPneu extends State<SosPneu> {
           Align(
             alignment: Alignment.topCenter,
             child: HeaderWidget(
-                topLeftIcon: "assets/images/back.png", showRightIcon: false),
+              leftIcon: Icons.arrow_back_ios,
+              showRightIcon: false,
+              onPressLeftIcon: sosPneuVM.onPressBack
+            ),
           ),
           Padding(
               padding: EdgeInsets.only(top: 110, left: 15),
@@ -43,19 +51,23 @@ class _SosPneu extends State<SosPneu> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               SizedBox(height: 10),
-                              Image.asset("assets/images/pneu.png"),
+                              Icon(
+                                MyFlutterApp.wheel,
+                                size: ScreenUtil().setWidth(150),
+                              ),
                               SizedBox(height: 10),
                               Text(
                                 "SOS Pneu",
                                 style: TextStyle(
-                                    fontFamily: "Poppins", fontSize: 22),
+                                    fontFamily: "Poppins",
+                                    fontSize: ScreenUtil().setWidth(50)),
                               ),
                               Padding(
                                   padding: EdgeInsets.only(top: 30),
                                   child: SizedBox(
                                       width: 270,
                                       child: InputField(
-                                        hint: "Marque",
+                                        hint: Constants.MARQUE,
                                         numberInput: false,
                                         textController:
                                             sosPneuVM.marqueTextController,
@@ -65,7 +77,7 @@ class _SosPneu extends State<SosPneu> {
                                   child: SizedBox(
                                       width: 270,
                                       child: InputField(
-                                        hint: "Modèle",
+                                        hint: Constants.MODELE,
                                         numberInput: false,
                                         textController:
                                             sosPneuVM.modeleTextController,
@@ -75,7 +87,7 @@ class _SosPneu extends State<SosPneu> {
                                   child: SizedBox(
                                       width: 270,
                                       child: InputField(
-                                        hint: "N° Chassis",
+                                        hint: Constants.NUM_CHASSIS,
                                         numberInput: false,
                                         textController:
                                             sosPneuVM.numChassisTextController,
@@ -85,7 +97,7 @@ class _SosPneu extends State<SosPneu> {
                                   child: SizedBox(
                                       width: 270,
                                       child: InputField(
-                                        hint: "N° Tél",
+                                        hint: Constants.NUM_TEL,
                                         numberInput: true,
                                         textController:
                                             sosPneuVM.phoneNumberTextController,
@@ -97,7 +109,7 @@ class _SosPneu extends State<SosPneu> {
                                       height: 50,
                                       child: RoundedLoadingButton(
                                         color: Color(0xff910112),
-                                        child: Text('Valider',
+                                        child: Text(Constants.BUTTON_ENVOYER,
                                             style:
                                                 TextStyle(color: Colors.white)),
                                         controller: sosPneuVM.btnController,
@@ -124,7 +136,7 @@ class _SosPneu extends State<SosPneu> {
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-            icon: Icon(MyFlutterApp.cog_wheel),
+            icon: Icon(MyFlutterApp.wheel),
             title: Text('SOS Pneu'),
             activeColor: Colors.red,
             textAlign: TextAlign.center,
@@ -142,7 +154,22 @@ class _SosPneu extends State<SosPneu> {
             textAlign: TextAlign.center,
           ),
         ],
-        onItemSelected: (int value) {},
+        onItemSelected: (int value) {
+          if (value == 0) {
+            Navigator.pushReplacement(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Assistance()));
+          } else if (value == 2) {
+            Navigator.pushReplacement(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => SosBatterie()));
+          } else if (value == 3) {
+            DialogBox().showSimpleSnackbar(
+                _scaffoldKey, Constants.FEATURE_COMMING_SOON);
+          }
+        },
       ),
     );
   }

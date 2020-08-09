@@ -1,24 +1,29 @@
+import 'package:depanauto/CustomWidgets/my_flutter_app_icons.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 
 class HeaderWidget extends StatelessWidget {
-
   String topLeftIcon = "assets/images/info.png";
   VoidCallback onPressLeftIcon;
   VoidCallback onPressRightIcon;
-  bool showRightIcon ;
-  HeaderWidget({
-    this.topLeftIcon,
-    this.onPressLeftIcon,
-    this.onPressRightIcon,
-    this.showRightIcon
-  });
+  bool showRightIcon;
+
+  IconData leftIcon;
+
+  HeaderWidget(
+      {this.topLeftIcon,
+      this.onPressLeftIcon,
+      this.onPressRightIcon,
+      this.showRightIcon,
+      this.leftIcon});
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     return Container(
         margin: EdgeInsets.only(left: 0, top: 0, right: 0),
         height: 100,
@@ -47,11 +52,22 @@ class HeaderWidget extends StatelessWidget {
             children: <Widget>[
               Padding(
                   padding: EdgeInsets.only(left: 10),
-                  child: Image.asset(this.topLeftIcon)),
+                  child: InkWell(
+                    onTap: onPressLeftIcon,
+                    child: Icon(this.leftIcon, size: ScreenUtil().setWidth(60)),
+                  )),
               Image.asset("assets/images/logoTrans.png"),
-              this.showRightIcon?  Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Image.asset("assets/images/close.jpg")) : SizedBox(width: 10),
+              this.showRightIcon
+                  ? Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: InkWell(
+                        onTap: onPressRightIcon,
+                        child: Icon(
+                          MyFlutterApp.close,
+                          size: ScreenUtil().setWidth(60),
+                        ),
+                      ))
+                  : SizedBox(width: 10),
             ],
           ),
         ));
