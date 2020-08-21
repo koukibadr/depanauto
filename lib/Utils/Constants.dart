@@ -15,8 +15,15 @@ class Constants {
   static const MARQUE = "Marque véhicule" ;
   static const MODELE = "Modèle" ;
   static const NUM_CHASSIS = "N° Chassis" ;
+  static const LIST_PIECES = "Liste des pieces" ;
   static const NUM_TEL = "N° Tél" ;
 
-  static const PHONE_NUMBER = "55850022";
-  static const PHONE_NUMBER_AFFICHE = "+216 55 850 022";
+  static const PHONE_NUMBER = "54278278";
+  static const PHONE_NUMBER_AFFICHE = "+216 54 278 278";
+
+  static const NO_CONNECTION = "NO_CONNECTION";
+  static const VERIFY_CONNECTION = "Veuillez vérifier la connexion internet et ressayez";
+
+  static const METHOD_GET = "GET";
+  static const METHOD_POST= "POST";
 }

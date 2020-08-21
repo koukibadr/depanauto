@@ -5,17 +5,22 @@ class InputField extends StatelessWidget {
   String hint;
   var textController;
   bool numberInput;
-  InputField({this.hint, this.textController, this.numberInput});
+  bool multiline;
+  bool editable ;
+  InputField({this.hint, this.textController, this.numberInput,this.editable,this.multiline});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Material(
         elevation: 1,
+        
         borderRadius: BorderRadius.circular(20.0),
         child: TextFormField(
+          enabled: editable,
           controller: textController,
-          keyboardType: this.numberInput? TextInputType.number : TextInputType.text,
+          keyboardType: this.numberInput? TextInputType.number : this.multiline? TextInputType.multiline : TextInputType.text,
+          maxLines: null,
           style: TextStyle(fontFamily: "Poppins", fontSize: 12),
           cursorColor: Colors.grey,
           decoration: new InputDecoration(

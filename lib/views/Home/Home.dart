@@ -6,11 +6,13 @@ import 'package:depanauto/Utils/DialogBox.dart';
 import 'package:depanauto/Utils/Utilities.dart';
 import 'package:depanauto/views/Assistance/Assistance.dart';
 import 'package:depanauto/views/Home/HomeVM.dart';
+import 'package:depanauto/views/PiecesNeuves/PiecesNeuvesScreen.dart';
 import 'package:depanauto/views/SosBatterie/SosBatterie.dart';
 import 'package:depanauto/views/SosPneu/SosPneu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -26,7 +28,7 @@ class _Home extends State<Home> {
     ScreenUtil.init(context);
     this.context = context;
 
-    HomeVM homeVM = HomeVM(_scaffoldKey);
+    HomeVM homeVM = HomeVM(_scaffoldKey, context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -60,13 +62,17 @@ class _Home extends State<Home> {
                             },
                             child: HomeBox(
                                 icon: MyFlutterApp.emergency,
-                                title: "Dépanage\nd'urgence"),
+                                title: "Dépannage\nd'urgence",
+                                boxColor: Colors.red,
+                                itemColor: Colors.white),
                           ),
                           SizedBox(width: ScreenUtil().setWidth(60)),
                           InkWell(
                             onTap: () => navigate(SosPneu()),
                             child: HomeBox(
                               icon: MyFlutterApp.wheel,
+                              boxColor: Colors.white,
+                              itemColor: Colors.black,
                               title: "SOS Pneu",
                             ),
                           )
@@ -83,6 +89,8 @@ class _Home extends State<Home> {
                               onTap: () => navigate(SosBatterie()),
                               child: HomeBox(
                                 icon: MyFlutterApp.car,
+                                boxColor: Colors.white,
+                                itemColor: Colors.black,
                                 title: "SOS Batterie",
                               ),
                             ),
@@ -93,6 +101,8 @@ class _Home extends State<Home> {
                               },
                               child: HomeBox(
                                 icon: MyFlutterApp.shock,
+                                boxColor: Colors.white,
+                                itemColor: Colors.black,
                                 title: "Pièces neuves \net occasion",
                               ),
                             )
@@ -103,11 +113,18 @@ class _Home extends State<Home> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Text(
-                  "depanauto v1.01",
-                  style: TextStyle(fontFamily: "Poppins-Thin"),
+                child: Container(
+                  child: InkWell(
+                    onTap: () {
+                      launchURL();
+                    },
+                    child: Opacity(
+                        opacity: 0.2,
+                        child: Image.asset("assets/images/logo_mcom.png",
+                            width: ScreenUtil().setWidth(300))),
+                  ),
                 ),
-              ),
+              )
             ],
           )),
     );
@@ -151,8 +168,10 @@ class _Home extends State<Home> {
               style: TextStyle(color: Colors.blue)),
           onPressed: () {
             Navigator.pop(context);
-            DialogBox().showSimpleSnackbar(
-                _scaffoldKey, Constants.FEATURE_COMMING_SOON);
+            Navigator.push(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => PiecesNeuvesScreen()));
           },
         )
       ],
@@ -165,5 +184,14 @@ class _Home extends State<Home> {
       ),
     );
     showCupertinoModalPopup(context: context, builder: (context) => action);
+  }
+
+  Future<void> launchURL() async {
+    const url = "https://mcom.tn";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

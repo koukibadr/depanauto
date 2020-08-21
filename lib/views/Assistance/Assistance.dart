@@ -1,13 +1,16 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:depanauto/CustomWidgets/AssistanceTelNumberBox.dart';
+import 'package:depanauto/CustomWidgets/CustomButton.dart';
 import 'package:depanauto/CustomWidgets/HeaderWidget.dart';
 import 'package:depanauto/CustomWidgets/InputField.dart';
 import 'package:depanauto/CustomWidgets/my_flutter_app_icons.dart';
 import 'package:depanauto/Utils/Constants.dart';
 import 'package:depanauto/Utils/DialogBox.dart';
 import 'package:depanauto/views/Assistance/AssistanceVM.dart';
+import 'package:depanauto/views/PiecesNeuves/PiecesNeuvesScreen.dart';
 import 'package:depanauto/views/SosBatterie/SosBatterie.dart';
 import 'package:depanauto/views/SosPneu/SosPneu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -23,7 +26,7 @@ class _Assistance extends State<Assistance> {
 
   @override
   Widget build(BuildContext context) {
-    AssistanceVM assistanceVM = AssistanceVM(_scaffoldKey,context);
+    AssistanceVM assistanceVM = AssistanceVM(_scaffoldKey, context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -56,7 +59,7 @@ class _Assistance extends State<Assistance> {
                                   size: ScreenUtil().setWidth(150)),
                               SizedBox(height: 10),
                               Text(
-                                "Dépanage\nd'urgence",
+                                "Dépannage\nd'urgence",
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontSize: ScreenUtil().setWidth(50)),
@@ -80,20 +83,16 @@ class _Assistance extends State<Assistance> {
                                           hint: Constants.NUM_TEL,
                                           numberInput: true,
                                           textController: assistanceVM
-                                              .phoneNumberTextController))),
+                                              .phoneNumberTextController,
+                                          editable: true,
+                                          multiline: false))),
                               Padding(
                                   padding: EdgeInsets.only(top: 20),
                                   child: SizedBox(
                                       width: 270,
                                       height: 50,
-                                      child: RoundedLoadingButton(
-                                        color: Color(0xff910112),
-                                        child: Text(Constants.BUTTON_ENVOYER,
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                        controller: assistanceVM.btnController,
-                                        onPressed:
-                                            assistanceVM.sendAssistanceRequest,
+                                      child: CustomButton(
+                                        functionToExecute: assistanceVM.sendAssistanceRequest,
                                       )))
                             ])
                       ],
@@ -146,11 +145,53 @@ class _Assistance extends State<Assistance> {
                 MaterialPageRoute(
                     builder: (BuildContext context) => SosBatterie()));
           } else if (value == 3) {
-            DialogBox().showSimpleSnackbar(
-                _scaffoldKey, Constants.FEATURE_COMMING_SOON);
+            showPiecesPopup();
           }
         },
       ),
     );
+  }
+
+  void showPiecesPopup() {
+    final action = CupertinoActionSheet(
+      title: Text(
+        "Dépanauto",
+        style: TextStyle(fontSize: 30),
+      ),
+      message: Text(
+        Constants.SELECT_TYPE_PIECES,
+        style: TextStyle(fontSize: 15.0),
+      ),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          child: Text(Constants.PIECE_OCCASION,
+              style: TextStyle(color: Colors.blue)),
+          onPressed: () {
+            Navigator.pop(context);
+            DialogBox().showSimpleSnackbar(
+                _scaffoldKey, Constants.FEATURE_COMMING_SOON);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: Text(Constants.PIECE_NEUVES,
+              style: TextStyle(color: Colors.blue)),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pushReplacement(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => PiecesNeuvesScreen()));
+          },
+        )
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Text(Constants.ANNULER),
+        isDestructiveAction: true,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+    showCupertinoModalPopup(context: context, builder: (context) => action);
   }
 }

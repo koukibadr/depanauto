@@ -56,7 +56,7 @@ class HeaderWidget extends StatelessWidget {
                     onTap: onPressLeftIcon,
                     child: Icon(this.leftIcon, size: ScreenUtil().setWidth(60)),
                   )),
-              Image.asset("assets/images/logoTrans.png"),
+              Image.asset("assets/images/logo.png",width: ScreenUtil().setWidth(350),),
               this.showRightIcon
                   ? Padding(
                       padding: EdgeInsets.only(right: 10),

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:depanauto/Utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -15,7 +16,7 @@ class CustomButton extends StatelessWidget {
     return Container(
       child: OutlineButton(
         child: Text(
-          "Valider",
+          Constants.BUTTON_ENVOYER,
           style: TextStyle(color: Colors.red),
         ),
         borderSide: BorderSide(color: Colors.red, width: 0.5),

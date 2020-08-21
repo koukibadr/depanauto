@@ -1,4 +1,5 @@
 import 'package:depanauto/Network/DepanautoAPI.dart';
+import 'package:depanauto/Utils/Constants.dart';
 import 'package:depanauto/Utils/Utilities.dart';
 import 'package:depanauto/views/Home/Home.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +20,18 @@ class _SplashScreen extends State<SplashScreen> {
     Utilities().verifTokenSaved().then((tokenSaved) {
       if (!tokenSaved) {
         DpanautoAPI().requestNewToken().then((token) {
-          Utilities().saveNewToken(token).then((value) {
-            Future.delayed(const Duration(milliseconds: 3000), () {
-              setState(() {
-                Navigator.pushReplacement(
-                    this.activityContext,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Home()));
+          if (token != Constants.NO_CONNECTION) {
+            Utilities().saveNewToken(token).then((value) {
+              Future.delayed(const Duration(milliseconds: 3000), () {
+                setState(() {
+                  Navigator.pushReplacement(
+                      this.activityContext,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Home()));
+                });
               });
             });
-          });
+          }
         });
       } else {
         Future.delayed(const Duration(milliseconds: 3000), () {
@@ -48,8 +51,21 @@ class _SplashScreen extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         color: Colors.white,
-        child: Center(
-          child: Image.asset("assets/images/logo.png",width: ScreenUtil().setWidth(800), height: ScreenUtil().setHeight(800)),
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset("assets/images/logo.png",
+                  width: ScreenUtil().setWidth(900),
+                  height: ScreenUtil().setHeight(900)),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Image.asset("assets/images/logo_mcom.png",
+                  width: ScreenUtil().setWidth(300),
+                  height: ScreenUtil().setHeight(300)),
+            )
+          ],
         ),
       ),
     );

@@ -26,7 +26,10 @@ dependencies:
   rounded_loading_button: ^1.0.12
   url_launcher: ^5.5.0
   flutter_screenutil: ^2.3.1
-  flutter_launcher_icons: ^0.7.4  
+  flutter_launcher_icons: ^0.7.4
+  text_extension: ^0.0.1
+  progress_dialog: ^1.2.4
+  rflutter_alert: ^1.0.3
 
 
 dev_dependencies:
@@ -34,7 +37,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter_icons:
-    image_path: 'assets/images/appLauncher.jpg'
+    image_path: 'assets/images/launcher.png'
     android: true
     ios: true
 
@@ -61,6 +64,7 @@ flutter:
     - assets/images/pneu.png
     - assets/images/urgence.png
     - assets/images/phone.png
+    - assets/images/logo_mcom.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

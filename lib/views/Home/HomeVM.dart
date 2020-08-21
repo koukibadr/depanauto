@@ -1,21 +1,27 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:depanauto/Utils/Constants.dart';
-import 'package:depanauto/Utils/DialogBox.dart';
+import 'package:depanauto/Entities/Brand.dart';
+import 'package:depanauto/Network/DepanautoAPI.dart';
+import 'package:depanauto/Utils/Utilities.dart';
+import 'package:depanauto/views/Information/Information.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeVM {
   GlobalKey<ScaffoldState> _scaffoldKey;
-  HomeVM(GlobalKey<ScaffoldState> scaffoldKey){
+  BuildContext _context;
+  HomeVM(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
     _scaffoldKey = scaffoldKey;
+    _context = context;
   }
 
-  void infoClicked(){
-    DialogBox().showSimpleSnackbar(_scaffoldKey, Constants.FEATURE_COMMING_SOON);
+  void infoClicked() {
+    Navigator.push(_context,
+        MaterialPageRoute(builder: (BuildContext context) => Information()));
   }
 
-  void closeApp(){
+  void closeApp() {
     exit(0);
   }
-
 }

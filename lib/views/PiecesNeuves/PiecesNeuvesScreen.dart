@@ -8,30 +8,30 @@ import 'package:depanauto/Network/DepanautoAPI.dart';
 import 'package:depanauto/Utils/Constants.dart';
 import 'package:depanauto/Utils/DialogBox.dart';
 import 'package:depanauto/views/Assistance/Assistance.dart';
-import 'package:depanauto/views/PiecesNeuves/PiecesNeuvesScreen.dart';
-import 'package:depanauto/views/SosBatterie/SosBatterieVM.dart';
+import 'package:depanauto/views/PiecesNeuves/PiecesNeuvesVM.dart';
+import 'package:depanauto/views/SosBatterie/SosBatterie.dart';
 import 'package:depanauto/views/SosPneu/SosPneu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-class SosBatterie extends StatefulWidget {
+class PiecesNeuvesScreen extends StatefulWidget {
   static String marqueSelected = "";
   @override
-  State<StatefulWidget> createState() => _SosBatterie();
+  State<StatefulWidget> createState() => _PiecesNeuvesScreen();
 }
 
-class _SosBatterie extends State<SosBatterie> {
+class _PiecesNeuvesScreen extends State<PiecesNeuvesScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    SosBatterieVM sosBatterieVM = SosBatterieVM(_scaffoldKey, context);
+    PiecesNeuvesVM piecesNeuvesVM = PiecesNeuvesVM(_scaffoldKey, context);
 
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: Colors.white,
+      key: _scaffoldKey,
       body: Stack(
         children: <Widget>[
           Align(
@@ -39,7 +39,7 @@ class _SosBatterie extends State<SosBatterie> {
             child: HeaderWidget(
                 leftIcon: Icons.arrow_back_ios,
                 showRightIcon: false,
-                onPressLeftIcon: sosBatterieVM.onPressBack),
+                onPressLeftIcon: piecesNeuvesVM.onPressBack),
           ),
           Padding(
               padding: EdgeInsets.only(top: 110, left: 15),
@@ -55,11 +55,13 @@ class _SosBatterie extends State<SosBatterie> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               SizedBox(height: 10),
-                              Icon(MyFlutterApp.car,
-                                  size: ScreenUtil().setWidth(150)),
+                              Icon(
+                                MyFlutterApp.shock,
+                                size: ScreenUtil().setWidth(150),
+                              ),
                               SizedBox(height: 10),
                               Text(
-                                "SOS Batterie",
+                                "Pièces Neuves",
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontSize: ScreenUtil().setWidth(50)),
@@ -69,18 +71,17 @@ class _SosBatterie extends State<SosBatterie> {
                                   child: SizedBox(
                                       width: 270,
                                       child: InkWell(
-                                        onTap: () {
-                                          _modalBottomSheetMenu();
-                                        },
-                                        child: InputField(
-                                          hint: Constants.MARQUE,
-                                          numberInput: false,
-                                          textController: sosBatterieVM
-                                              .marqueTextController,
-                                          editable: false,
-                                          multiline: false,
-                                        ),
-                                      ))),
+                                          onTap: () {
+                                            _modalBottomSheetMenu();
+                                          },
+                                          child: InputField(
+                                            hint: Constants.MARQUE,
+                                            numberInput: false,
+                                            textController: piecesNeuvesVM
+                                                .marqueTextController,
+                                            editable: false,
+                                            multiline: false,
+                                          )))),
                               Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: SizedBox(
@@ -89,7 +90,7 @@ class _SosBatterie extends State<SosBatterie> {
                                         hint: Constants.MODELE,
                                         numberInput: false,
                                         textController:
-                                            sosBatterieVM.modeleTextController,
+                                            piecesNeuvesVM.modeleTextController,
                                         editable: true,
                                         multiline: false,
                                       ))),
@@ -100,7 +101,7 @@ class _SosBatterie extends State<SosBatterie> {
                                       child: InputField(
                                         hint: Constants.NUM_CHASSIS,
                                         numberInput: false,
-                                        textController: sosBatterieVM
+                                        textController: piecesNeuvesVM
                                             .numChassisTextController,
                                         editable: true,
                                         multiline: false,
@@ -109,10 +110,23 @@ class _SosBatterie extends State<SosBatterie> {
                                   padding: EdgeInsets.only(top: 10),
                                   child: SizedBox(
                                       width: 270,
+                                      height: 90,
+                                      child: InputField(
+                                        hint: Constants.LIST_PIECES,
+                                        numberInput: false,
+                                        textController: piecesNeuvesVM
+                                            .listPiecesTextController,
+                                        editable: true,
+                                        multiline: true,
+                                      ))),
+                              Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: SizedBox(
+                                      width: 270,
                                       child: InputField(
                                         hint: Constants.NUM_TEL,
                                         numberInput: true,
-                                        textController: sosBatterieVM
+                                        textController: piecesNeuvesVM
                                             .phoneNumberTextController,
                                         editable: true,
                                         multiline: false,
@@ -123,7 +137,7 @@ class _SosBatterie extends State<SosBatterie> {
                                       width: 270,
                                       height: 50,
                                       child: CustomButton(
-                                        functionToExecute: sosBatterieVM.sendBatterieRequest,
+                                        functionToExecute: piecesNeuvesVM.sendPNRequest,
                                       )))
                             ])
                       ],
@@ -135,7 +149,7 @@ class _SosBatterie extends State<SosBatterie> {
       ),
       bottomNavigationBar: BottomNavyBar(
         showElevation: true,
-        selectedIndex: 2,
+        selectedIndex: 3,
         itemCornerRadius: 20,
         curve: Curves.easeInBack,
         items: [
@@ -154,13 +168,13 @@ class _SosBatterie extends State<SosBatterie> {
           BottomNavyBarItem(
             icon: Icon(MyFlutterApp.car),
             title: Text('SOS Batterie'),
-            activeColor: Colors.red,
+            activeColor: Colors.grey,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
             icon: Icon(MyFlutterApp.shock),
             title: Text('Pieces'),
-            activeColor: Colors.grey,
+            activeColor: Colors.red,
             textAlign: TextAlign.center,
           ),
         ],
@@ -175,7 +189,12 @@ class _SosBatterie extends State<SosBatterie> {
                 this.context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => SosPneu()));
-          } else if (value == 3) {
+          } else if (value == 2) {
+            Navigator.pushReplacement(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => SosBatterie()));
+          } else {
             showPiecesPopup();
           }
         },
@@ -265,7 +284,8 @@ class _SosBatterie extends State<SosBatterie> {
                                     ),
                                     onTap: () {
                                       setState(() {
-                                        SosBatterie.marqueSelected = br.name;
+                                        PiecesNeuvesScreen.marqueSelected =
+                                            br.name;
                                       });
                                       Navigator.pop(context);
                                     },

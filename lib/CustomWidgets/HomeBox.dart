@@ -6,8 +6,10 @@ class HomeBox extends StatelessWidget {
   String image;
   String title;
   IconData icon;
+  Color boxColor ;
+  Color itemColor ;
 
-  HomeBox({this.image, this.title, this.icon});
+  HomeBox({this.image, this.title, this.icon,this.boxColor,this.itemColor});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class HomeBox extends StatelessWidget {
       width: 150,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.red),
-        color: Colors.white,
+        color: this.boxColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
@@ -38,13 +40,13 @@ class HomeBox extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Icon(this.icon, size: ScreenUtil().setHeight(120)),
+            Icon(this.icon, size: ScreenUtil().setHeight(120),color: this.itemColor,),
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(30)),
               child: Text(
                 this.title,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontFamily: 'Poppins'),
+                style: TextStyle(fontFamily: 'Poppins',color: this.itemColor),
               ),
             )
           ],

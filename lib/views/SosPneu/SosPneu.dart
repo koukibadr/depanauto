@@ -1,10 +1,14 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:depanauto/CustomWidgets/CustomButton.dart';
 import 'package:depanauto/CustomWidgets/HeaderWidget.dart';
 import 'package:depanauto/CustomWidgets/InputField.dart';
 import 'package:depanauto/CustomWidgets/my_flutter_app_icons.dart';
+import 'package:depanauto/Entities/Brand.dart';
+import 'package:depanauto/Network/DepanautoAPI.dart';
 import 'package:depanauto/Utils/Constants.dart';
 import 'package:depanauto/Utils/DialogBox.dart';
 import 'package:depanauto/views/Assistance/Assistance.dart';
+import 'package:depanauto/views/PiecesNeuves/PiecesNeuvesScreen.dart';
 import 'package:depanauto/views/SosBatterie/SosBatterie.dart';
 import 'package:depanauto/views/SosPneu/SosPneuVM.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,16 +17,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class SosPneu extends StatefulWidget {
+  static String marqueSelected = "";
+
   @override
   State<StatefulWidget> createState() => _SosPneu();
 }
+
+SosPneuVM sosPneuVM;
 
 class _SosPneu extends State<SosPneu> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    SosPneuVM sosPneuVM = SosPneuVM(_scaffoldKey, context);
+    sosPneuVM = SosPneuVM(_scaffoldKey, context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -32,10 +40,9 @@ class _SosPneu extends State<SosPneu> {
           Align(
             alignment: Alignment.topCenter,
             child: HeaderWidget(
-              leftIcon: Icons.arrow_back_ios,
-              showRightIcon: false,
-              onPressLeftIcon: sosPneuVM.onPressBack
-            ),
+                leftIcon: Icons.arrow_back_ios,
+                showRightIcon: false,
+                onPressLeftIcon: sosPneuVM.onPressBack),
           ),
           Padding(
               padding: EdgeInsets.only(top: 110, left: 15),
@@ -66,11 +73,18 @@ class _SosPneu extends State<SosPneu> {
                                   padding: EdgeInsets.only(top: 30),
                                   child: SizedBox(
                                       width: 270,
-                                      child: InputField(
-                                        hint: Constants.MARQUE,
-                                        numberInput: false,
-                                        textController:
-                                            sosPneuVM.marqueTextController,
+                                      child: InkWell(
+                                        onTap: () {
+                                          _modalBottomSheetMenu();
+                                        },
+                                        child: InputField(
+                                          hint: Constants.MARQUE,
+                                          numberInput: false,
+                                          textController:
+                                              sosPneuVM.marqueTextController,
+                                          editable: false,
+                                          multiline: false,
+                                        ),
                                       ))),
                               Padding(
                                   padding: EdgeInsets.only(top: 10),
@@ -81,6 +95,8 @@ class _SosPneu extends State<SosPneu> {
                                         numberInput: false,
                                         textController:
                                             sosPneuVM.modeleTextController,
+                                        editable: true,
+                                        multiline: false
                                       ))),
                               Padding(
                                   padding: EdgeInsets.only(top: 10),
@@ -91,6 +107,8 @@ class _SosPneu extends State<SosPneu> {
                                         numberInput: false,
                                         textController:
                                             sosPneuVM.numChassisTextController,
+                                        editable: true,
+                                        multiline: false
                                       ))),
                               Padding(
                                   padding: EdgeInsets.only(top: 10),
@@ -101,19 +119,16 @@ class _SosPneu extends State<SosPneu> {
                                         numberInput: true,
                                         textController:
                                             sosPneuVM.phoneNumberTextController,
+                                        editable: true,
+                                        multiline: false,
                                       ))),
                               Padding(
                                   padding: EdgeInsets.only(top: 20),
                                   child: SizedBox(
                                       width: 270,
                                       height: 50,
-                                      child: RoundedLoadingButton(
-                                        color: Color(0xff910112),
-                                        child: Text(Constants.BUTTON_ENVOYER,
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                        controller: sosPneuVM.btnController,
-                                        onPressed: sosPneuVM.sendPneuRequest,
+                                      child: CustomButton(
+                                        functionToExecute: sosPneuVM.sendPneuRequest,
                                       )))
                             ])
                       ],
@@ -166,11 +181,109 @@ class _SosPneu extends State<SosPneu> {
                 MaterialPageRoute(
                     builder: (BuildContext context) => SosBatterie()));
           } else if (value == 3) {
-            DialogBox().showSimpleSnackbar(
-                _scaffoldKey, Constants.FEATURE_COMMING_SOON);
+            showPiecesPopup();
           }
         },
       ),
     );
+  }
+
+  void showPiecesPopup() {
+    final action = CupertinoActionSheet(
+      title: Text(
+        "Dépanauto",
+        style: TextStyle(fontSize: 30),
+      ),
+      message: Text(
+        Constants.SELECT_TYPE_PIECES,
+        style: TextStyle(fontSize: 15.0),
+      ),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          child: Text(Constants.PIECE_OCCASION,
+              style: TextStyle(color: Colors.blue)),
+          onPressed: () {
+            Navigator.pop(context);
+            DialogBox().showSimpleSnackbar(
+                _scaffoldKey, Constants.FEATURE_COMMING_SOON);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: Text(Constants.PIECE_NEUVES,
+              style: TextStyle(color: Colors.blue)),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pushReplacement(
+                this.context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => PiecesNeuvesScreen()));
+          },
+        )
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Text(Constants.ANNULER),
+        isDestructiveAction: true,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+    showCupertinoModalPopup(context: context, builder: (context) => action);
+  }
+
+  void _modalBottomSheetMenu() {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: ScreenUtil().setHeight(700),
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: new Container(
+                decoration: new BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: new BorderRadius.only(
+                        topLeft: const Radius.circular(10.0),
+                        topRight: const Radius.circular(10.0))),
+                child: Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: FutureBuilder(
+                      future: DpanautoAPI().getBrandsList(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Brand>> snapshot) {
+                        if (snapshot.hasData) {
+                          List<Brand> brands = snapshot.data;
+                          return ListView(
+                            children: brands
+                                .map(
+                                  (Brand br) => ListTile(
+                                    title: Text(
+                                      "Marque",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins-Thin",
+                                          fontSize: 14),
+                                    ),
+                                    subtitle: Text(
+                                      br.name,
+                                      style: TextStyle(
+                                          fontFamily: "Poppins", fontSize: 18),
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        SosPneu.marqueSelected = br.name;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      },
+                    ))),
+          );
+        });
   }
 }
