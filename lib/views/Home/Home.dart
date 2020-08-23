@@ -34,6 +34,7 @@ class _Home extends State<Home> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Container(
+          color: Colors.white,
           width: double.infinity,
           height: double.infinity,
           child: Stack(
@@ -41,19 +42,38 @@ class _Home extends State<Home> {
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: HeaderWidget(
-                    leftIcon: MyFlutterApp.info__1_,
-                    showRightIcon: true,
-                    onPressRightIcon: homeVM.closeApp,
-                    onPressLeftIcon: homeVM.infoClicked),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset("assets/images/logo.png",
+                              width: ScreenUtil().setWidth(250)),
+                          Text(
+                            "Bienvenue\nà depanauto",
+                            style: TextStyle(fontFamily: "Poppins"),
+                          )
+                        ],
+                      ),
+                      InkWell(
+                          onTap: () {
+                            homeVM.infoClicked();
+                          },
+                          child: Icon(MyFlutterApp.info__1_,
+                              size: ScreenUtil().setWidth(60))),
+                    ],
+                  ),
+                ),
               ),
               Align(
-                child: Column(
+                child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           InkWell(
@@ -63,47 +83,51 @@ class _Home extends State<Home> {
                             child: HomeBox(
                                 icon: MyFlutterApp.emergency,
                                 title: "Dépannage\nd'urgence",
-                                boxColor: Colors.red,
-                                itemColor: Colors.white),
+                                boxColor: Color(0xffff7e75),
+                                itemColor: Colors.white,
+                                height: 250),
                           ),
-                          SizedBox(width: ScreenUtil().setWidth(60)),
+                          SizedBox(height: ScreenUtil().setWidth(30)),
                           InkWell(
                             onTap: () => navigate(SosPneu()),
                             child: HomeBox(
                               icon: MyFlutterApp.wheel,
-                              boxColor: Colors.white,
+                              boxColor: Color(0xffefefef),
                               itemColor: Colors.black,
                               title: "SOS Pneu",
+                              height: 200,
                             ),
                           )
                         ],
                       ),
                       Padding(
                         padding:
-                            EdgeInsets.only(top: ScreenUtil().setHeight(80)),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                            EdgeInsets.only(left: ScreenUtil().setHeight(20)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             InkWell(
                               onTap: () => navigate(SosBatterie()),
                               child: HomeBox(
                                 icon: MyFlutterApp.car,
-                                boxColor: Colors.white,
+                                boxColor: Color(0xffefefef),
                                 itemColor: Colors.black,
                                 title: "SOS Batterie",
+                                height: 200,
                               ),
                             ),
-                            SizedBox(width: ScreenUtil().setWidth(60)),
+                            SizedBox(height: ScreenUtil().setWidth(30)),
                             InkWell(
                               onTap: () {
                                 showPieceChoices();
                               },
                               child: HomeBox(
                                 icon: MyFlutterApp.shock,
-                                boxColor: Colors.white,
+                                boxColor: Color(0xffefefef),
                                 itemColor: Colors.black,
                                 title: "Pièces neuves \net occasion",
+                                height: 250,
                               ),
                             )
                           ],

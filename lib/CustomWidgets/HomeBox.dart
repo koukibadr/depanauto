@@ -8,32 +8,24 @@ class HomeBox extends StatelessWidget {
   IconData icon;
   Color boxColor ;
   Color itemColor ;
+  double height ;
 
-  HomeBox({this.image, this.title, this.icon,this.boxColor,this.itemColor});
+  HomeBox({this.image, this.title, this.icon,this.boxColor,this.itemColor,this.height});
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Container(
       margin: EdgeInsets.only(left: 0, top: 0, right: 0),
-      height: 200,
+      height: this.height,
       width: 150,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.red),
         color: this.boxColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
             bottomLeft: Radius.circular(30),
             bottomRight: Radius.circular(30)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
       ),
       child: Center(
         child: Column(
